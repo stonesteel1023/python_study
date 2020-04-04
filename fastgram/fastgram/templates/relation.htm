@@ -1,0 +1,73 @@
+
+{% include "header.htm" %}
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.5.1/dist/dropzone.min.css">
+{% endblock %}
+
+{% block body %}
+<div class="all" style="margin-left: 100px;">
+  <p>사용자 찾기</p>
+  <input type="text" id="searchUserName" placeholder="유저이름을 입력해주세요.">
+  <button id="search" class="btn-outline-danger">검색</button>
+  <p><b id="searchResult"></b><span id="searchFollow" style="display: none;"> - <button></button></span></p>
+  <hr>
+
+  <h2>날 팔로우 하는 사람들</h2>
+  {% if followers  %}
+  <ul class="list-group">
+    {% for obj in followers %}
+      <li class="list-group-item col-md-6">
+        {{ obj.follower.username }}{% if obj.follower.id not in following_ids %} - <button class="follow btn btn-outline-danger" data-user-id="{{ obj.follower.id }}">팔로우</button>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+
+  <h2>내가 팔로우 하는 사람들</h2>
+  {% if following %}
+    <ul class="list-group">
+    {% for user in following %}
+      <li class="list-group-item col-md-6">{{ user.username }} - <button class="unfollow btn btn-outline-danger" data-user-id="{{ user.id }}">언팔로우</button></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+
+  <script>
+
+$(document).ready(function(){
+
+  $('#logout').click(function () {
+      $.get('/apis/v1/users/logout/', {}, function() {
+        location.reload();
+      });
+  });
+
+  $('body').delegate('.follow', 'click', function(e) {
+    var userId = $(e.currentTarget).data('user-id');
+    $.post("{% url 'apis_v1_relation_create' %}", {id: userId}, function(){
+        location.reload();
+    }).fail(function(data) {
+        alert(data.responseJSON.message);
+    });
+  });
+
+  $('body').delegate('.unfollow', 'click', function(e) {
+    var userId = $(e.currentTarget).data('user-id');
+    $.post("{% url 'apis_v1_relation_delete' %}", {id: userId}, function(){
+        location.reload();
+    }).fail(function(data) {
+        alert(data.responseJSON.message);
+    });
+  });
+});
+  </script>
+{% endblock %}
