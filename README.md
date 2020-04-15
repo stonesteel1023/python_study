@@ -46,3 +46,30 @@ print id(dcpy)
 35302536
 ```
 <p style="text-align: left; clear: none; float: none;"><span style="font-size: 18.6666660308838px; line-height: 28px;"><b><u>정리</u></b></span></p><p style="text-align: left; clear: none; float: none;"><span style="font-size: 12pt; line-height: 28px;">immutable, mutable 속성은 매우 중요하다. 이 속성에 따라 변수가 함수의 매개변수로 전달될 때 원래 입력 변수값이 변경되는지 안되는지 결정된다. Call-By-Value, Call-By-Reference와 동일한 개념이다. 이해가 되지 않으면 직접 코딩해보고 차이점을 인지해야 한다.</span></p><p style="text-align: left;"><br /></p>
+
+## 파이썬 함수 오버로딩
+
+### 1.편집 Python 3.4의 새로운 단일 디스패치 제네릭 함수에 대해서는 http://www.python.org/dev/peps/pep-0443/을 참조하십시오.
+편집 Python 3.4의 새로운 단일 디스패치 제네릭 함수에 대해서는 http://www.python.org/dev/peps/pep-0443/을 참조하십시오.
+
+일반적으로 Python에서 함수를 오버로드 할 필요는 없습니다. 파이썬은 동적으로 타입이 지정되며 함수에 대한 선택적 인수를 지원합니다.
+```
+def myfunction(first, second, third = None):
+    if third is None:
+        #just use first and second
+    else:
+        #use all three
+
+myfunction(1, 2) # third will be None, so enter the 'if' clause
+myfunction(3, 4, 5) # third isn't None, it's 5, so enter the 'else' clause
+```
+==============================
+### 2.보통 파이썬에서는 원하는 것을 할 수 없습니다. 두 가지 근사치가 있습니다.
+보통 파이썬에서는 원하는 것을 할 수 없습니다. 두 가지 근사치가 있습니다.
+```
+def myfunction(first, second, *args):
+    # args is a tuple of extra arguments
+
+def myfunction(first, second, third=None):
+    # third is optional
+```
