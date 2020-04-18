@@ -5,18 +5,16 @@
 : 팔로우, 언팔로우
 
 2. 이미지 업로드
-
-
  - 웹개발 프로젝트이기 때문에 크롬브라우저에서
  - 그외에는 구글링, 스택오버플로우 이용
 
- # 개발환경 구축
+ ## 개발환경 구축
  - VSC2
  - python 3.6이상
  - Django 2.0이상
  - github
 
- # 프로젝트 세팅
+ ## 프로젝트 세팅
 
  1) pip install django
  2) django-admin startproject fastgram .
