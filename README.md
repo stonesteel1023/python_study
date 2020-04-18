@@ -47,7 +47,7 @@ print id(dcpy)
 ```
 <p style="text-align: left; clear: none; float: none;"><span style="font-size: 18.6666660308838px; line-height: 28px;"><b><u>정리</u></b></span></p><p style="text-align: left; clear: none; float: none;"><span style="font-size: 12pt; line-height: 28px;">immutable, mutable 속성은 매우 중요하다. 이 속성에 따라 변수가 함수의 매개변수로 전달될 때 원래 입력 변수값이 변경되는지 안되는지 결정된다. Call-By-Value, Call-By-Reference와 동일한 개념이다. 이해가 되지 않으면 직접 코딩해보고 차이점을 인지해야 한다.</span></p><p style="text-align: left;"><br /></p>
 
-## 파이썬 함수 오버로딩
+## [Python 함수] 함수 오버로딩
 
 ### 1.편집 Python 3.4의 새로운 단일 디스패치 제네릭 함수에 대해서는 http://www.python.org/dev/peps/pep-0443/을 참조하십시오.
 편집 Python 3.4의 새로운 단일 디스패치 제네릭 함수에 대해서는 http://www.python.org/dev/peps/pep-0443/을 참조하십시오.
