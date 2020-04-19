@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\py_workspace\python_study\challenge"
+VIRTUAL_ENV="C:\Coding\py_workspace\python_study\challenge"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
