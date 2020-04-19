@@ -3,10 +3,8 @@ from bs4 import BeautifulSoup as bs4
 from babel.numbers import format_currency
 
 url = "https://www.iban.com/currency-codes"
-url_converse="https://transferwise.com/gb/currency-converter/gbp-to-usd-rate?amount=50"
 
 countries = []
-currencies = []
 
 request = requests.get(url)
 soup = bs4(request.text, "html.parser")
@@ -65,9 +63,11 @@ def converse(country_a, country_b) :
         
   print(f"{format_currency(currency_input,country_a_code)} is {format_currency(amount, country_b_code)}")
 
-print("Welcome to CurrencyConvert PRO 2020:")
-for index, country in enumerate(countries):
-  print(f"#{index} {country['name']}")
-
+def __init__() :
+  print("Welcome to CurrencyConvert PRO 2020:")
+  for index, country in enumerate(countries):
+    print(f"#{index} {country['name']}")
+          
+__init__()
 ask()
 
