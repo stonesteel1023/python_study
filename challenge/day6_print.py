@@ -43,7 +43,7 @@ def ask():
 
         # url_converse
         converse(country_a, country_b)
-
+        print('=================== FINISH ====================')
   except ValueError:
     print("That wasn't a number.")
     ask()
@@ -61,12 +61,13 @@ def converse(country_a, country_b) :
         
   amount = currency_soup.find("input",{"class" : "js-TargetAmount"})["value"]
         
-  print(f"{format_currency(currency_input,country_a_code)} is {format_currency(amount, country_b_code)}")
+  print(f"{format_currency(currency_input,country_a_code, locale='en_US')} is {format_currency(amount, country_b_code, locale ='en_US')}")
 
 def __init__() :
-  print("Welcome to CurrencyConvert PRO 2020:")
-  for index, country in enumerate(countries):
-    print(f"#{index} {country['name']}")
+    print("Welcome to CurrencyConvert PRO 2020:")
+    for index, country in enumerate(countries):
+        print(f"#{index} {country['name']}")
+    print('=================== START ====================')
           
 __init__()
 ask()
