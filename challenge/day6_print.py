@@ -1,16 +1,6 @@
-import os
 import requests
 from bs4 import BeautifulSoup as bs4
 from babel.numbers import format_currency
-
-os.system("clear")
-
-"""
-Use the 'format_currency' function to format the output of the conversion
-format_currency(AMOUNT, CURRENCY_CODE, locale="ko_KR" (no need to change this one))
-"""
-
-# print(format_currency(5000, "KRW", locale="ko_KR"))
 
 url = "https://www.iban.com/currency-codes"
 url_converse="https://transferwise.com/gb/currency-converter/gbp-to-usd-rate?amount=50"
