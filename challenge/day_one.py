@@ -20,3 +20,9 @@
 ### beautifulsoup4
 ### babel
 ### csv
+### flask
+
+# 경로에러 발생시
+# 오류메시지 : Faltal error in launcher: Unable to create process using '' install flask
+# 해결방법 : 앞에 python -m 을 붙여준다
+# ex) python -m pip install falsk

@@ -10,7 +10,6 @@ new = f"{base_url}/search_by_date?tags=story"
 # This URL gets the most popular stories
 popular = f"{base_url}/search?tags=story"
 
-os.system("clear")
 
 # This function makes the URL to get the detail of a storie by id.
 # Heres the documentation: https://hn.algolia.com/api
