@@ -1,92 +1,93 @@
 import requests
-from flask import Flask, render_template, request, redirect, send_file
-from wework_scrapper import get_weworkd_jobs as we
-from stack_scrapper import get_stack_of_flow_jobs as stack
-from ok_scrapper import get_ok_jobs as ok
+from flask import Flask, render_template, request, redirect, send_file, Response
 from bs4 import BeautifulSoup as bs
 import csv
+from io import StringIO
 
-class main :
-    db = {}
+db = {}
+def scrap_jobs(word):
+    if word:
+        word = word.lower()
+        exist_jobs = db.get(word)
 
-    def scrap_jobs(word):
-        if word:
-            word = word.lower()
-            exist_jobs = db.get(word)
+        if exist_jobs:
+            jobs = exist_jobs
+        else:
+            ok_jobs = []
+            stack_jobs = []
+            workwork = Wework_scrapper()
+            we_jobs = workwork.get_weworkd_jobs(word)
+            jobs = ok_jobs + we_jobs + stack_jobs
+            db[word] = jobs
+    return jobs
+
+app = Flask("Search Remote Jobs")
+
+@app.route("/")
+def home():
+    return render_template(
+        "home3.html"
+    )
+    
+@app.route("/search")
+def search():
+    word = request.args.get("word")
+    jobs = scrap_jobs(word)
+    return render_template(
+        "search.html",
+        word=word,
+        jobs=jobs,
+        job_len=len(jobs)
+    )
+    
+@app.route("/export")
+def export():
+    # word 확인
+    term = request.args.get("term")
   
-            if exist_jobs:
-                jobs = exist_jobs
-            else:
-                ok_jobs = ok(word)
-        stack_jobs = stack(word)
-        we_jobs = we(word)
-        jobs = ok_jobs + we_jobs + stack_jobs
-  
-        db[word] = jobs
-        return jobs
+    # fake db 확인
+    term = term.lower()
+    jobs = db.get(term)
 
-    app = Flask("Search Remote Jobs")
+    if jobs:
+        print(jobs)
+        output = StringIO()
+        output.write(u'\ufeff')
 
-    @app.route("/")
-    def home():
-        return render_template(
-            "home3.html"
-        )
-
-    @app.route("/search")
-    def search():
-        word = request.args.get("word")
-        jobs = we(word)
-
-        return render_template(
-            "search.html",
-            word=word,
-            jobs=jobs,
-            job_len=len(jobs)
-        )
-
-    @app.route("/export")
-    def export():
-        # url 확인
-        try:
-            # word 확인
-            word = request.args.get("word")
-            if not word:
-                raise Exception()
-            # fake db 확인
-            word = word.lower()
-            jobs = db.get(word)
-            if not jobs:
-                raise Exception()
-      
-            file = open("csv/jobs.csv", mode="w")
-            write = csv.writer(file)
-            write.writerow([*jobs[0].keys()])
-            for job in jobs:
-                write.writerow([*job.values()])
-
-            output = StringIO()
-
-            response = Response(
-                output.getvalue(),
-                mimetype="text/csv",
-                content_type="application/octet-stream",
-            )   
-            response.headers["Content-Disposition"] = f"attachment; filename={term}.csv"
-            return response
-
-        except Exception:
-            return redirect("/")
+        # header
+        for idx, key in enumerate(jobs[0].keys()):
+            output.write(key)
+            if idx < len([*jobs[0].keys()]) - 1:
+                output.write(",")
+        output.write("\n")
+    
+        for job in jobs:
+            for idx, value in enumerate(job.values()):
+                output.write(value)
+                if idx < len([*jobs.values()]) - 1:
+                    output.write(",")
+            output.write("\n")
         
-        def save_to_file(jobs):
-            file = open("csv/jobs.csv", mode="w")
-            write = csv.writer(file)
-            write.writerow([*jobs[0].keys()])
-            for job in jobs:
-                write.writerow([*job.values()])
+        response = Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        content_type="application/octet-stream",
+        )
+        response.headers["Content-Disposition"] = f"attachment; filename={term}.csv"
+        return response
+    else:
+        print(jobs)
+    
+def save_to_file(jobs):
+    file = open("list.csv", mode="w")
+    write = csv.writer(file)
+    write.writerow([*jobs[0].keys()])
+    for job in jobs:
+         write.writerow([*job.values()])
+            
+app.run("127.0.0.1")
 
-
-class ok_scrapper() :
+class Ok_scrapper :
     OK_URL = "https://remoteok.io"
     site_name = "remoteok"
 
@@ -122,7 +123,7 @@ class ok_scrapper() :
         jobs = get_jobs(word)
         return jobs
     
-class stack_scrapper() :
+class Stack_scrapper :
     LIMIT = 50
     STACK_OF_FLOW_URL = f"https://stackoverflow.com/jobs?sort=i"
     site_name = "stackofflow"
@@ -182,7 +183,7 @@ class stack_scrapper() :
         jobs = get_jobs(last_page, word)
         return jobs
     
-class wework_scrapper() :
+class Wework_scrapper :
     # wework
     WEWORK_URL = "https://weworkremotely.com"
     site_name = "weworkremotely"
@@ -236,3 +237,4 @@ class wework_scrapper() :
         print(f"{site_name} scrapper...")
         jobs = get_jobs(word)
         return jobs
+    

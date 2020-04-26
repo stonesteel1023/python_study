@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
 
-
 def extract_post(html, subreddit):
   votes = html.find("div", {"class":"_1rZYMD_4xY3gRcSS3p8ODO"})
   if votes:
@@ -36,7 +35,7 @@ def scrape_subreddit(subreddit):
     pass
   return all_posts
 
-def aggregate_subreddits(subreddits):
+def aggregated_jobs(subreddits):
   aggregated = []
   for subreddit in subreddits:
     posts = scrape_subreddit(subreddit)
